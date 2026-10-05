@@ -1,87 +1,133 @@
-# Fama–French Three-Factor Model: A Modern Reassessment
+# Factor Regime Lab
 
-## Overview
+### Measuring the stability of equity factor exposures across a century of U.S. market data
 
-This project examines the Fama–French Three-Factor Model using U.S. equity portfolio data from Kenneth French's Data Library.
+Factor models are typically estimated over long historical samples, but the relationships they capture need not remain stable as markets evolve.
 
-The analysis asks a simple question:
+**Factor Regime Lab** examines how the explanatory power and estimated exposures of the Fama–French factors change across time and across the 25 Size × Book-to-Market portfolios.
 
-> How well does the classic Fama–French Three-Factor Model explain the cross-section of stock returns, and has its explanatory power changed in the modern market?
+The analysis spans U.S. equity data from 1926 to the present and focuses on three quantities:
 
-Rather than treating the model as a historical result, this project compares its performance across different time periods, with particular attention to the post-2010 market.
+- **pricing errors (α)** — returns left unexplained by the model
+- **factor exposures (β)** — sensitivity to market, size, and value factors
+- **model fit (R²)** — how much return variation the factors explain
 
-## Model
+The central question is:
 
-The Fama–French Three-Factor Model is estimated as:
+> **Are classic equity factor relationships persistent, or are they regime-dependent?**
 
-Rᵢ,t − RFₜ = αᵢ + βMKT(MKTₜ − RFₜ) + βSMB SMBₜ + βHML HMLₜ + εᵢ,t
+---
 
-where:
+## Research Scope
 
-- **MKT − RF**: market excess return
-- **SMB**: size factor (Small Minus Big)
-- **HML**: value factor (High Minus Low)
-- **α**: abnormal return not explained by the three factors
+The analysis is designed around four empirical questions:
+
+1. How stable are market, size, and value exposures through time?
+2. Where in the Size × Book-to-Market cross-section does the model produce the largest pricing errors?
+3. Has factor behavior changed materially in the post-2010 market?
+4. Are apparent changes isolated to individual portfolios or systematic across the cross-section?
+
+---
 
 ## Data
 
-Data are obtained from the Kenneth R. French Data Library.
+Monthly observations are sourced from the **Kenneth R. French Data Library** and extend from July 1926 to the present.
 
-The project uses:
+### Factor Returns
 
-- Monthly Fama–French three-factor returns
-- 25 portfolios sorted by Size and Book-to-Market
-- Historical sample beginning in 1926
-- Modern subsample beginning in 2010
+| Series | Description |
+|---|---|
+| Mkt−RF | Market excess return |
+| SMB | Small Minus Big — size factor |
+| HML | High Minus Low — value factor |
+| RF | Risk-free rate |
 
-Using the 25 Size × Book-to-Market portfolios allows the model to be tested across firms with systematically different size and value characteristics.
+### Test Assets
 
-## Methodology
+The test assets are 25 value-weighted portfolios formed independently on:
 
-The project estimates time-series OLS regressions for each of the 25 portfolios.
+- market equity (Size)
+- book-to-market equity (B/M)
 
-The analysis compares:
+Together they form a 5 × 5 cross-section ranging from Small/Growth to Big/Value firms.
 
-1. Full historical sample
-2. Modern market period (2010–present)
-3. Factor loadings across portfolio characteristics
-4. Portfolio-level pricing errors (alpha)
-5. Model explanatory power (R²)
+---
 
-The goal is not only to reproduce the classic Fama–French regression, but to examine where the model continues to perform well and where its explanatory power may weaken in more recent markets.
+## Empirical Framework
 
-## Current Progress
+For portfolio *i*, monthly excess returns are estimated as:
 
-- [x] Download Fama–French factor data
-- [x] Download 25 Size × Book-to-Market portfolios
-- [x] Align portfolio and factor dates
-- [x] Estimate initial three-factor regression
-- [x] Create modern 2010–present sample
-- [x] Build reusable regression function
-- [ ] Estimate all 25 portfolio regressions
-- [ ] Analyze alpha patterns
-- [ ] Compare historical and modern results
-- [ ] Visualize factor loadings
-- [ ] Test joint pricing errors
-- [ ] Document findings
+\[
+R_{i,t}-R_{f,t}
+=
+\alpha_i
++\beta_{MKT,i}(R_{M,t}-R_{f,t})
++\beta_{SMB,i}SMB_t
++\beta_{HML,i}HML_t
++\epsilon_{i,t}
+\]
 
-## Tools
+The analysis extracts four sets of diagnostics from each regression:
 
-- Python
-- pandas
-- NumPy
-- statsmodels
-- matplotlib
-- pandas-datareader
+**Pricing error**
+- α
+- t-statistic
+- statistical significance
 
-## Research Questions
+**Factor structure**
+- βMKT
+- βSMB
+- βHML
 
-This project focuses on three questions:
+**Explanatory power**
+- R²
 
-1. How effectively does the Fama–French Three-Factor Model explain returns across the 25 Size × Book-to-Market portfolios?
-2. Does model performance differ between the historical sample and the post-2010 period?
-3. Which types of portfolios produce the largest unexplained returns?
+These quantities are evaluated across portfolios and across time rather than interpreted as fixed characteristics.
 
-## Status
+---
 
-Work in progress.
+## Analytical Pipeline
+
+The current pipeline:
+
+1. retrieves monthly factor and portfolio returns
+2. aligns observations by date
+3. constructs portfolio excess returns
+4. estimates factor models across the 25 test assets
+5. extracts coefficients, inference statistics, and model fit
+6. compares long-run estimates with the post-2010 sample
+
+The next analytical layer will introduce rolling estimation and regime-level comparisons to measure parameter stability directly.
+
+---
+
+## Research Roadmap
+
+### Cross-sectional diagnostics
+- 5 × 5 alpha maps
+- factor-loading maps
+- significance patterns
+- comparison of model fit across test assets
+
+### Temporal stability
+- historical vs. modern estimates
+- rolling factor loadings
+- rolling pricing errors
+- rolling R²
+
+### Robustness
+- heteroskedasticity/autocorrelation-robust inference
+- alternative sample definitions
+- joint tests of pricing errors
+- comparison with expanded factor specifications
+
+---
+
+## Repository
+
+```text
+ff-factor/
+├── fama_french.py
+├── README.md
+├── requirements.txt
+└── .gitignore
