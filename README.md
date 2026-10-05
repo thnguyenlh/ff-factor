@@ -55,19 +55,19 @@ Together they form a 5 × 5 cross-section ranging from Small/Growth to Big/Value
 
 ## Empirical Framework
 
-For portfolio *i*, monthly excess returns are estimated as:
+For portfolio *i*, monthly excess returns are estimated using the Fama–French three-factor model:
 
-\[
-R_{i,t}-R_{f,t}
+$$
+R_{i,t} - R_{f,t}
 =
 \alpha_i
-+\beta_{MKT,i}(R_{M,t}-R_{f,t})
-+\beta_{SMB,i}SMB_t
-+\beta_{HML,i}HML_t
-+\epsilon_{i,t}
-\]
++ \beta_{MKT,i}(R_{M,t} - R_{f,t})
++ \beta_{SMB,i}SMB_t
++ \beta_{HML,i}HML_t
++ \epsilon_{i,t}
+$$
 
-The analysis extracts four sets of diagnostics from each regression:
+The analysis extracts three sets of diagnostics from each regression:
 
 **Pricing error**
 - α
